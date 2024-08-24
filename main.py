@@ -5,6 +5,7 @@ import pygame
 
 from sokoban import solve_game
 
+
 def parse_arguments():
     usage_str = """
     USAGE:      python3 sokoban.py <options>
@@ -13,7 +14,7 @@ def parse_arguments():
     parser = OptionParser(usage_str)
 
     parser.add_option('-b', '--board', dest='board', type='str', help='The board to solve', metavar='board')
-    parser.add_option('-m', '--method', dest='method', type = 'str', help='The search method', metavar='method',
+    parser.add_option('-m', '--method', dest='method', type='str', help='The search method', metavar='method',
                       default='back')
     parser.add_option('-t', '--timeout', dest='timeout', type='int', help="The method's timeout in seconds",
                       metavar='timeout', default=int('inf'))
@@ -25,6 +26,7 @@ def parse_arguments():
     if len(other_junk) != 0:
         raise Exception('Command option(s) not understood: ' + str(other_junk))
     return options
+
 
 if __name__ == '__main__':
     args = parse_arguments()
@@ -43,9 +45,7 @@ if __name__ == '__main__':
                 pygame.quit()
                 raise SystemExit
 
-
         screen.fill('purple')  # Fill the display with a solid color
-
 
         pygame.display.flip()  # Refresh on-screen display
         clock.tick(60)  # wait until next frame (at 60 FPS)

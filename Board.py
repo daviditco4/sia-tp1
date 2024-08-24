@@ -83,8 +83,8 @@ class Matrix(list):
         if action_cost is not None:
             moves.append(action_cost)
         return moves
-    
-    def successor(self, direction, perform_on_self = False):
+
+    def successor(self, direction, perform_on_self=False):
         if perform_on_self:
             return _successor(self, direction)
         matrix = copy.deepcopy(self)
