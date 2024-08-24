@@ -1,5 +1,5 @@
 import sys
-from optparse import OptionParser
+import optparse
 
 import pygame
 
@@ -7,11 +7,11 @@ from sokoban import solve_game
 
 
 def parse_arguments():
-    usage_str = """
+    usage_str = '''
     USAGE:      python3 sokoban.py <options>
     EXAMPLES:   (1) python3 sokoban.py --board boards/my_board.txt
-    """
-    parser = OptionParser(usage_str)
+    '''
+    parser = optparse.OptionParser(usage_str)
 
     parser.add_option('-b', '--board', dest='board', type='str', help='The board to solve', metavar='board')
     parser.add_option('-m', '--method', dest='method', type='str', help='The search method', metavar='method',

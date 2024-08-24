@@ -52,19 +52,47 @@ def _successor(matrix, direction):
 
 
 class Matrix(list):
-    _size = [0, 0]
+    _size = (0, 0)
     _string = ''
     _moves = None
     _actions = None
 
-    def get_size(self):
+    @property
+    def size(self):
         return self._size
 
+    @size.setter
+    def size(self, value):
+        self._size = value
+
     def get_player_position(self):
-        for i in range(0, len(self)):
-            for j in range(0, len(self[i])):
+        for i in range(len(self)):
+            for j in range(len(self[i])):
                 if self[i][j] in '@+':
                     return j, i
+
+    def get_boxes_position(self):
+        boxes = []
+        for i in range(len(self)):
+            for j in range(len(self[i])):
+                if self[i][j] in '$*':
+                    boxes.append([j, i])
+        return boxes
+
+    def get_goals_position(self):
+        goals = []
+        for i in range(len(self)):
+            for j in range(len(self[i])):
+                if self[i][j] in '+*.':
+                    goals.append([j, i])
+        return goals
+
+    def is_win(self):
+        for row in self:
+            for col in row:
+                if col == '$':
+                    return False
+        return True
 
     def get_possible_actions(self):
         x, y = self.get_player_position()
@@ -108,6 +136,4 @@ class Board:
             if row_length > max_row_length:
                 max_row_length = row_length
 
-        self.matrix.size = [max_row_length, len(self.matrix)]
-        self.matrix.width = max_row_length
-        self.matrix.height = len(self.matrix)
+        self.matrix._size = (max_row_length, len(self.matrix))
