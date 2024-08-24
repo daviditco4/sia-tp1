@@ -3,8 +3,11 @@ from Board import Board
 
 level = None
 
-def solve_game():
+def _solve(args):
+    return ''
+
+def solve_game(args):
     global level
     level = Board()
 
-    return ''
+    moves = _solve(args)

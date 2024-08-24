@@ -1,9 +1,34 @@
+import sys
+from optparse import OptionParser
+
 import pygame
 
 from sokoban import solve_game
 
+def parse_arguments():
+    usage_str = """
+    USAGE:      python3 sokoban.py <options>
+    EXAMPLES:   (1) python3 sokoban.py --board boards/my_board.txt
+    """
+    parser = OptionParser(usage_str)
+
+    parser.add_option('-b', '--board', dest='board', type='str', help='The board to solve', metavar='board')
+    parser.add_option('-m', '--method', dest='method', type = 'str', help='The search method', metavar='method',
+                      default='back')
+    parser.add_option('-t', '--timeout', dest='timeout', type='int', help="The method's timeout in seconds",
+                      metavar='timeout', default=int('inf'))
+    parser.add_option('-c', '--cost', dest='cost', type='str', help='The cost function to use', metavar='cost',
+                      default='uniform')
+    parser.add_option('-s', '--heuristic', dest='heuristic', type='str', help='The heuristic function to use',
+                      metavar='heuristic', default='manhattan')
+    options, other_junk = parser.parse_args(sys.argv[1:])
+    if len(other_junk) != 0:
+        raise Exception('Command option(s) not understood: ' + str(other_junk))
+    return options
+
 if __name__ == '__main__':
-    solve_game()
+    args = parse_arguments()
+    solve_game(args)
 
     pygame.init()
 
