@@ -1,6 +1,10 @@
 import pygame
 
+from sokoban import solve_game
+
 if __name__ == '__main__':
+    solve_game()
+
     pygame.init()
 
     screen = pygame.display.set_mode((1280, 720))
@@ -15,7 +19,7 @@ if __name__ == '__main__':
                 raise SystemExit
 
 
-        screen.fill("purple")  # Fill the display with a solid color
+        screen.fill('purple')  # Fill the display with a solid color
 
 
         pygame.display.flip()  # Refresh on-screen display
