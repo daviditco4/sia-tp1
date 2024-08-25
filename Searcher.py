@@ -1,5 +1,7 @@
 import math
 
+from PriorityQueue import PriorityQueue
+
 
 def _sum_each_box_to_nearest_goal_ignoring_walls(method):
     min_dist_cache = {}
@@ -36,10 +38,32 @@ class Searcher:
     }
 
     def bfs(self, starting_matrix, cache):
-        return self.astar(starting_matrix, cost='uniform', heuristic='none', max_cost=500, cache=cache)
+        return self.astar(starting_matrix, heuristic='none', cache=cache)
 
-    def astar(self, starting_matrix, cache, cost='uniform', heuristic='manhattan', max_cost=500):
+    def astar(self, starting_matrix, cache, cost='uniform', heuristic='manhattan', max_cost=1000):
         h = self.heuristics[heuristic]
         c = self.costs[cost]
-
-        return '', 0
+        queue = PriorityQueue()
+        action_sequence_cache = {str(starting_matrix): ''}
+        starting_matrix.heuristic = h(starting_matrix)
+        queue.add_item(starting_matrix, starting_matrix.heuristic, starting_matrix.heuristic)
+        while not queue.is_empty():
+            matrix_cost_heuristic, matrix = queue.pop_item()
+            action_sequence = action_sequence_cache[str(matrix)]
+            cache[str(matrix)] = len(action_sequence)
+            if matrix.is_win():
+                return action_sequence, len(cache)
+            if matrix_cost_heuristic > max_cost:
+                continue
+            for action, action_cost in matrix.get_possible_actions():
+                successor = matrix.successor(action)
+                if str(successor) in cache:
+                    continue
+                if not str(successor) in action_sequence_cache or len(action_sequence_cache[str(successor)]) > len(
+                        action_sequence) + 1:
+                    action_sequence_cache[str(successor)] = action_sequence + action
+                successor.heuristic = h(successor)
+                queue.add_item(successor,
+                               matrix_cost_heuristic - matrix.heuristic + c(action_cost) + successor.heuristic,
+                               successor.heuristic)
+        return '', len(cache)

@@ -6,7 +6,6 @@ def _update_valid(item, move, get_two_step):
     if item not in '#$*':
         return move, 'move'
     if item in '$*' and get_two_step() not in '#$*':
-        # We do not like moving blocks out of their respective targets
         return (move, 'push') if item is '$' else (move, 'push_out')
     return None
 
@@ -54,16 +53,29 @@ def _successor(matrix, direction):
 class Matrix(list):
     _size = (0, 0)
     _string = ''
+    _heuristic = None
     _moves = None
     _actions = None
+
+    def __str__(self):
+        self._string = self._string or '\n'.join([''.join(i) for i in self])
+        return self._string
 
     @property
     def size(self):
         return self._size
 
+    @property
+    def heuristic(self):
+        return self._heuristic
+
     @size.setter
     def size(self, value):
         self._size = value
+
+    @heuristic.setter
+    def heuristic(self, value):
+        self._heuristic = value
 
     def get_player_position(self):
         for i in range(len(self)):
