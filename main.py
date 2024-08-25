@@ -9,15 +9,15 @@ from sokoban import solve_game
 def parse_arguments():
     usage_str = '''
     USAGE:      python3 sokoban.py <options>
-    EXAMPLES:   (1) python3 sokoban.py --board boards/my_board.txt
+    EXAMPLES:   (1) python3 sokoban.py -b boards/my_board.txt
     '''
     parser = optparse.OptionParser(usage_str)
 
     parser.add_option('-b', '--board', dest='board', type='str', help='The board to solve', metavar='board')
-    parser.add_option('-m', '--method', dest='method', type='str', help='The search method', metavar='method',
-                      default='back')
+    parser.add_option('-a', '--algorithm', dest='algorithm', type='str', help='The search algorithm',
+                      metavar='algorithm', default='astar')
     parser.add_option('-t', '--timeout', dest='timeout', type='int', help="The method's timeout in seconds",
-                      metavar='timeout', default=int('inf'))
+                      metavar='timeout', default=100)
     parser.add_option('-c', '--cost', dest='cost', type='str', help='The cost function to use', metavar='cost',
                       default='uniform')
     parser.add_option('-s', '--heuristic', dest='heuristic', type='str', help='The heuristic function to use',

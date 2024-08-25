@@ -1,12 +1,11 @@
 import copy
-import sys
 
 
 def _update_valid(item, move, get_two_step):
     if item not in '#$*':
         return move, 'move'
     if item in '$*' and get_two_step() not in '#$*':
-        return (move, 'push') if item is '$' else (move, 'push_out')
+        return move, 'push' if item == '$' else move, 'push_out'
     return None
 
 
@@ -56,6 +55,9 @@ class Matrix(list):
     _heuristic = None
     _moves = None
     _actions = None
+
+    def __hash__(self):
+        return hash(str(self))
 
     def __str__(self):
         self._string = self._string or '\n'.join([''.join(i) for i in self])
@@ -134,18 +136,25 @@ class Matrix(list):
 
 
 class Board:
-    matrix = Matrix()
+    _matrix = Matrix()
     matrix_history = None
 
-    def __init__(self):
-        with open(sys.argv[1], 'r') as f:
+    def __init__(self, board_file_path):
+        if not board_file_path:
+            return
+
+        with open(board_file_path, 'r') as f:
             for row in f.read().splitlines():
-                self.matrix.append(list(row))
+                self._matrix.append(list(row))
 
         max_row_length = 0
-        for row in self.matrix:
+        for row in self._matrix:
             row_length = len(row)
             if row_length > max_row_length:
                 max_row_length = row_length
 
-        self.matrix._size = (max_row_length, len(self.matrix))
+        self._matrix._size = (max_row_length, len(self._matrix))
+
+    @property
+    def matrix(self):
+        return self._matrix
