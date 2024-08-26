@@ -26,6 +26,7 @@ def _sum_each_box_to_nearest_goal_ignoring_walls(method):
 class Searcher:
     cache = {}
     costs = {
+        'none': lambda _: 0,
         'uniform': lambda _: 1,
         'cost2': lambda action: 1 if action == 'move' else 2,
         'cost3': lambda action: 1 if action == 'move' else 2 if action == 'push' else 3
@@ -40,7 +41,10 @@ class Searcher:
     def bfs(self, starting_matrix, cache):
         return self.astar(starting_matrix, heuristic='none', cache=cache)
 
-    def astar(self, starting_matrix, cache, cost='uniform', heuristic='manhattan', max_cost=1000):
+    def greedy(self, starting_matrix, cache, heuristic='manhattan'):
+        return self.astar(starting_matrix, cost='none', heuristic=heuristic, cache=cache)
+
+    def astar(self, starting_matrix, cache, cost='uniform', heuristic='manhattan', max_cost_heuristic=1000):
         h = self.heuristics[heuristic]
         c = self.costs[cost]
         queue = PriorityQueue()
@@ -55,7 +59,7 @@ class Searcher:
                 print(matrix)
                 print('Win')
                 return action_sequence, len(cache)
-            if matrix_cost_heuristic > max_cost:
+            if matrix_cost_heuristic > max_cost_heuristic:
                 print('Reached max cost')
                 continue
             for (action, action_cost) in matrix.get_possible_actions():

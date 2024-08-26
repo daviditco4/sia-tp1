@@ -13,6 +13,8 @@ def _solve_internal(matrix, cache, algorithm, cost, heuristic, ret):
     match algorithm:
         case 'bfs':
             moves = searcher.bfs(matrix, cache)
+        case 'greedy':
+            moves = searcher.greedy(matrix, cache, heuristic=heuristic)
         case 'astar':
             moves = searcher.astar(matrix, cache=cache, cost=cost, heuristic=heuristic)
         case _:
@@ -25,7 +27,8 @@ def _solve(matrix, args):
     ret = multiprocessing.Queue()
     cache = {}
 
-    p = multiprocessing.Process(target=_solve_internal, args=(matrix, cache, args.algorithm, args.cost, args.heuristic, ret))
+    p = multiprocessing.Process(target=_solve_internal,
+                                args=(matrix, cache, args.algorithm, args.cost, args.heuristic, ret))
     starting_time = time.time()
     p.start()
     p.join(args.timeout)
@@ -36,6 +39,8 @@ def _solve(matrix, args):
     info = {'Algorithm': args.algorithm, 'Board': pathlib.Path(args.board).name,
             'ElapsedSeconds': time.time() - starting_time, 'AmountOfMovesToWin': len(action_sequence) or 'N/A',
             'NodesExpanded': nodes_expanded}
+    if args.algorithm == 'greedy' or args.algorithm == 'astar':
+        info['Heuristic'] = args.heuristic
     with open(log_file_path, mode='a', newline='') as log_file:
         writer = csv.DictWriter(log_file, fieldnames=list(info.keys()))
         if not (log_path.exists() and log_path.stat().st_size):
