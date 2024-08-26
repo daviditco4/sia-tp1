@@ -5,13 +5,12 @@ def _update_valid(item, move, get_two_step):
     if item not in '#$*':
         return move, 'move'
     if item in '$*' and get_two_step() not in '#$*':
-        return move, 'push' if item == '$' else move, 'push_out'
+        return (move, 'push') if item == '$' else (move, 'push_out')
     return None
 
 
 def _successor(matrix, direction):
     x, y = matrix.get_player_position()
-    versor = None
 
     match direction:
         case 'L':
@@ -22,6 +21,8 @@ def _successor(matrix, direction):
             versor = (-1, 0)
         case 'D':
             versor = (1, 0)
+        case _:
+            versor = None
     step = matrix[y + versor[0]][x + versor[1]]
     two_step = matrix[y + 2 * versor[0]][x + 2 * versor[1]]
 
@@ -143,15 +144,12 @@ class Board:
         if not board_file_path:
             return
 
+        max_row_length = 0
         with open(board_file_path, 'r') as f:
             for row in f.read().splitlines():
                 self._matrix.append(list(row))
-
-        max_row_length = 0
-        for row in self._matrix:
-            row_length = len(row)
-            if row_length > max_row_length:
-                max_row_length = row_length
+                if len(row) > max_row_length:
+                    max_row_length = len(row)
 
         self._matrix._size = (max_row_length, len(self._matrix))
 

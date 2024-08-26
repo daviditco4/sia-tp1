@@ -15,8 +15,8 @@ def _sum_each_box_to_nearest_goal_ignoring_walls(method):
             return min_dist_cache[key]
         else:
             total = 0
-            for bp in boxes_position:
-                total += min([method(bp, tp) for tp in goal_position] or [0])
+            for b in boxes_position:
+                total += min([method(b, t) for t in goal_position] or [0])
             min_dist_cache[key] = total
             return total
 
@@ -52,10 +52,13 @@ class Searcher:
             action_sequence = action_sequence_cache[str(matrix)]
             cache[str(matrix)] = len(action_sequence)
             if matrix.is_win():
+                print(matrix)
+                print('Win')
                 return action_sequence, len(cache)
             if matrix_cost_heuristic > max_cost:
+                print('Reached max cost')
                 continue
-            for action, action_cost in matrix.get_possible_actions():
+            for (action, action_cost) in matrix.get_possible_actions():
                 successor = matrix.successor(action)
                 if str(successor) in cache:
                     continue

@@ -6,37 +6,35 @@ import time
 from Board import Board
 from Searcher import Searcher
 
-board = Board('')
 
-
-def _solve_internal(cache, algorithm, cost, heuristic, ret):
+def _solve_internal(matrix, cache, algorithm, cost, heuristic, ret):
     searcher = Searcher()
 
     match algorithm:
         case 'bfs':
-            moves = searcher.bfs(board.matrix, cache)
+            moves = searcher.bfs(matrix, cache)
         case 'astar':
-            moves = searcher.astar(board.matrix, cache=cache, cost=cost, heuristic=heuristic)
+            moves = searcher.astar(matrix, cache=cache, cost=cost, heuristic=heuristic)
         case _:
             moves = None
 
     ret.put(moves)
 
 
-def _solve(args):
+def _solve(matrix, args):
     ret = multiprocessing.Queue()
     cache = {}
 
-    p = multiprocessing.Process(target=_solve_internal, args=(cache, args.algorithm, args.cost, args.heuristic, ret))
+    p = multiprocessing.Process(target=_solve_internal, args=(matrix, cache, args.algorithm, args.cost, args.heuristic, ret))
     starting_time = time.time()
     p.start()
     p.join(args.timeout)
 
-    action_sequence, nodes_expanded = ret.get() or '', None
+    action_sequence, nodes_expanded = ret.get() if not ret.empty() else ('', 'N/A')
     log_file_path = args.algorithm + '.csv'
     log_path = pathlib.Path(log_file_path)
     info = {'Algorithm': args.algorithm, 'Board': pathlib.Path(args.board).name,
-            'ElapsedSeconds': time.time() - starting_time, 'AmountOfMovesToWin': len(action_sequence) or None,
+            'ElapsedSeconds': time.time() - starting_time, 'AmountOfMovesToWin': len(action_sequence) or 'N/A',
             'NodesExpanded': nodes_expanded}
     with open(log_file_path, mode='a', newline='') as log_file:
         writer = csv.DictWriter(log_file, fieldnames=list(info.keys()))
@@ -48,7 +46,6 @@ def _solve(args):
 
 
 def solve_game(args):
-    global board
     board = Board(args.board)
 
-    _solve(args)
+    print('Solved: ' + _solve(board.matrix, args))

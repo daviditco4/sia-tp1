@@ -17,7 +17,7 @@ def parse_arguments():
     parser.add_option('-a', '--algorithm', dest='algorithm', type='str', help='The search algorithm',
                       metavar='algorithm', default='astar')
     parser.add_option('-t', '--timeout', dest='timeout', type='int', help="The method's timeout in seconds",
-                      metavar='timeout', default=100)
+                      metavar='timeout', default=10000)
     parser.add_option('-c', '--cost', dest='cost', type='str', help='The cost function to use', metavar='cost',
                       default='uniform')
     parser.add_option('-s', '--heuristic', dest='heuristic', type='str', help='The heuristic function to use',
