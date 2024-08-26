@@ -13,6 +13,8 @@ def _solve_internal(matrix, cache, algorithm, cost, heuristic, ret):
     match algorithm:
         case 'bfs':
             moves = searcher.bfs(matrix, cache)
+        case 'dfs':
+            moves = searcher.dfs(matrix, cache)
         case 'greedy':
             moves = searcher.greedy(matrix, cache, heuristic=heuristic)
         case 'astar':

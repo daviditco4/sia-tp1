@@ -1,3 +1,4 @@
+import collections
 import math
 
 from PriorityQueue import PriorityQueue
@@ -40,6 +41,22 @@ class Searcher:
 
     def bfs(self, starting_matrix, cache):
         return self.astar(starting_matrix, heuristic='none', cache=cache)
+
+    def dfs(self, starting_matrix, cache, max_cost=1000):
+        stack = collections.deque([(starting_matrix, '')])
+        while len(stack) > 0:
+            matrix, action_sequence = stack.pop()
+            cache[str(matrix)] = len(action_sequence)
+            if matrix.is_win():
+                return action_sequence, len(cache)
+            if len(action_sequence) > max_cost:
+                continue
+            for (action, _) in matrix.get_possible_actions():
+                successor = matrix.successor(action)
+                if str(successor) in cache:
+                    continue
+                stack.append((successor, action_sequence + action))
+        return '', len(cache)
 
     def greedy(self, starting_matrix, cache, heuristic='manhattan'):
         return self.astar(starting_matrix, cost='none', heuristic=heuristic, cache=cache)
