@@ -70,3 +70,24 @@ class Searcher:
                                matrix_cost_heuristic - matrix.heuristic + c(action_cost) + successor.heuristic,
                                successor.heuristic)  # Add the successor to the queue with updated cost
         return '', len(cache)  # Return an empty action sequence and the cache size if no solution is found
+
+    def dfs(self, starting_matrix, cache):
+        stack = [starting_matrix]  # Initialize the stack with the starting matrix
+        action_sequence_cache = {str(starting_matrix): ''}  # Initialize the action sequence cache
+        while stack:
+            matrix = stack.pop()  # Pop the last matrix from the stack
+            action_sequence = action_sequence_cache[str(matrix)]  # Get the action sequence for the current matrix
+            cache[str(matrix)] = len(action_sequence)  # Cache the length of the action sequence
+            if matrix.is_win():
+                print(matrix)
+                print('Win')
+                return action_sequence, len(cache)  # Return the action sequence and the cache size if the goal is reached
+            for (action, action_cost) in matrix.get_possible_actions():
+                successor = matrix.successor(action)  # Get the successor matrix for the action
+                if str(successor) in cache:
+                    continue  # Skip if the successor is already in the cache
+                if not str(successor) in action_sequence_cache or len(action_sequence_cache[str(successor)]) > len(
+                        action_sequence) + 1:
+                    action_sequence_cache[str(successor)] = action_sequence + action  # Update the action sequence cache
+                stack.append(successor)  # Push the successor onto the stack
+        return '', len(cache)  # Return an empty action sequence and the cache size if no solution is found
