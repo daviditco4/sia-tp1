@@ -39,10 +39,9 @@ def _solve(matrix, args):
     log_file_path = args.algorithm + '.csv'
     log_path = pathlib.Path(log_file_path)
     info = {'Algorithm': args.algorithm, 'Board': pathlib.Path(args.board).name,
-            'ElapsedSeconds': time.time() - starting_time, 'AmountOfMovesToWin': len(action_sequence) or 'N/A',
-            'NodesExpanded': nodes_expanded}
-    if args.algorithm == 'greedy' or args.algorithm == 'astar':
-        info['Heuristic'] = args.heuristic
+            'ElapsedSeconds': time.time() - starting_time,
+            'Heuristic': args.heuristic if args.algorithm == 'greedy' or args.algorithm == 'astar' else 'N/A',
+            'AmountOfMovesToWin': len(action_sequence) or 'N/A', 'NodesExpanded': nodes_expanded}
     with open(log_file_path, mode='a', newline='') as log_file:
         writer = csv.DictWriter(log_file, fieldnames=list(info.keys()))
         if not (log_path.exists() and log_path.stat().st_size):
