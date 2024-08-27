@@ -1,0 +1,5 @@
+Algorithm,Board,ElapsedSeconds,AmountOfMovesToWin,NodesExpanded
+astar,board0.txt,0.20863580703735352,1,2
+astar,board0.txt,0.1870567798614502,1,2
+astar,board0.txt,0.20717167854309082,1,2
+astar,board0.txt,0.24529409408569336,1,2
