@@ -35,13 +35,14 @@ def _solve(matrix, args):
     p.start()
     p.join(args.timeout)
 
-    action_sequence, nodes_expanded = ret.get() if not ret.empty() else ('', 'N/A')
+    action_sequence, nodes_expanded, frontier_nodes = ret.get() if not ret.empty() else ('', 'N/A', 'N/A')
     log_file_path = args.algorithm + '.csv'
     log_path = pathlib.Path(log_file_path)
-    info = {'Algorithm': args.algorithm, 'Board': pathlib.Path(args.board).name,
+    info = {'Algorithm': args.algorithm, 'Board': pathlib.Path(args.board).stem,
             'ElapsedSeconds': time.time() - starting_time,
             'Heuristic': args.heuristic if args.algorithm == 'greedy' or args.algorithm == 'astar' else 'N/A',
-            'AmountOfMovesToWin': len(action_sequence) or 'N/A', 'NodesExpanded': nodes_expanded}
+            'AmountOfMovesToWin': len(action_sequence) or 'N/A', 'NodesExpanded': nodes_expanded,
+            'FrontierNodes': frontier_nodes}
     with open(log_file_path, mode='a', newline='') as log_file:
         writer = csv.DictWriter(log_file, fieldnames=list(info.keys()))
         if not (log_path.exists() and log_path.stat().st_size):

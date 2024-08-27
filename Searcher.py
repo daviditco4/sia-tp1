@@ -48,7 +48,7 @@ class Searcher:
             matrix, action_sequence = stack.pop()
             cache[str(matrix)] = len(action_sequence)
             if matrix.is_win():
-                return action_sequence, len(cache)
+                return action_sequence, len(cache), 0
             if len(action_sequence) > max_cost:
                 continue
             for (action, _) in matrix.get_possible_actions():
@@ -75,7 +75,7 @@ class Searcher:
             if matrix.is_win():
                 print(matrix)
                 print('Win')
-                return action_sequence, len(cache)
+                return action_sequence, len(cache), len(set(action_sequence_cache.keys()) - set(cache.keys()))
             if matrix_cost_heuristic > max_cost_heuristic:
                 print('Reached max cost')
                 continue
