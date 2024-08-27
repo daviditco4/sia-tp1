@@ -2,11 +2,11 @@ import subprocess
 
 # Define the command template and the arguments
 command_template = 'python3'
-arguments = ['main.py -b 1.sok -a bfs', 'main.py -b 2.sok -a bfs', 'main.py -b 3.sok -a bfs', 'main.py -b 4.sok -a bfs',
-             'main.py -b 1.sok -a dfs', 'main.py -b 2.sok -a dfs', 'main.py -b 3.sok -a dfs', 'main.py -b 4.sok -a dfs',
-             'main.py -b 1.sok -a greedy', 'main.py -b 2.sok -a greedy', 'main.py -b 3.sok -a greedy',
-             'main.py -b 4.sok -a greedy', 'main.py -b 1.sok -a astar', 'main.py -b 2.sok -a astar',
-             'main.py -b 3.sok -a astar', 'main.py -b 4.sok -a astar']
+arguments = [ # 'main.py -b 1.sok -a bfs', 'main.py -b 2.sok -a bfs', 'main.py -b 3.sok -a bfs', 'main.py -b 4.sok -a bfs',
+             'main.py -b 1.sok -a dfs', 'main.py -b 2.sok -a dfs', 'main.py -b 3.sok -a dfs', 'main.py -b 4.sok -a dfs']
+             # 'main.py -b 1.sok -a greedy', 'main.py -b 2.sok -a greedy', 'main.py -b 3.sok -a greedy',
+             # 'main.py -b 4.sok -a greedy', 'main.py -b 1.sok -a astar', 'main.py -b 2.sok -a astar',
+             # 'main.py -b 3.sok -a astar', 'main.py -b 4.sok -a astar']
 
 # Number of repetitions
 num_repetitions = 20

@@ -43,22 +43,22 @@ if __name__ == "__main__":
     plt.savefig("elapsed_seconds_lineplot.png", dpi=300, bbox_inches='tight')
     plt.close()
 
-    plt.figure()
-    amount_of_moves_to_win_plot = sns.lineplot(data=aggregated_df, x='Board', y='AmountOfMovesToWin', hue='Algorithm',
-                                               style='Algorithm', marker=True, dashes=False)
-    # Ensure x-axis labels are integers
-    amount_of_moves_to_win_plot.xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
-    plt.savefig("amount_of_moves_to_win_lineplot.png", dpi=300, bbox_inches='tight')
-    plt.close()
-
-    plt.figure()
-    nodes_expanded_plot = sns.lineplot(data=aggregated_df, x='Board', y='NodesExpanded', hue='Algorithm',
-                                       style='Algorithm',
-                                       marker=True, dashes=False)
-    # Ensure x-axis labels are integers
-    nodes_expanded_plot.xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
-    plt.savefig("nodes_expanded_lineplot.png", dpi=300, bbox_inches='tight')
-    plt.close()
+    # plt.figure()
+    # amount_of_moves_to_win_plot = sns.lineplot(data=aggregated_df, x='Board', y='AmountOfMovesToWin', hue='Algorithm',
+    #                                            style='Algorithm', marker=True, dashes=False)
+    # # Ensure x-axis labels are integers
+    # amount_of_moves_to_win_plot.xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
+    # plt.savefig("amount_of_moves_to_win_lineplot.png", dpi=300, bbox_inches='tight')
+    # plt.close()
+    #
+    # plt.figure()
+    # nodes_expanded_plot = sns.lineplot(data=aggregated_df, x='Board', y='NodesExpanded', hue='Algorithm',
+    #                                    style='Algorithm',
+    #                                    marker=True, dashes=False)
+    # # Ensure x-axis labels are integers
+    # nodes_expanded_plot.xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
+    # plt.savefig("nodes_expanded_lineplot.png", dpi=300, bbox_inches='tight')
+    # plt.close()
 
     plt.figure()
     frontier_nodes_plot = sns.lineplot(data=aggregated_df, x='Board', y='FrontierNodes', hue='Algorithm',

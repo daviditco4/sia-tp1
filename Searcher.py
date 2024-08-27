@@ -43,20 +43,23 @@ class Searcher:
         return self.astar(starting_matrix, heuristic='none', cache=cache)
 
     def dfs(self, starting_matrix, cache, max_cost=1000):
-        stack = collections.deque([(starting_matrix, '')])
+        stack = collections.deque([starting_matrix])
+        action_sequence_cache = {str(starting_matrix): ''}
         while len(stack) > 0:
-            matrix, action_sequence = stack.pop()
+            matrix = stack.pop()
+            action_sequence = action_sequence_cache[str(matrix)]
             cache[str(matrix)] = len(action_sequence)
             if matrix.is_win():
-                return action_sequence, len(cache), 0
+                return action_sequence, len(cache), len(set(action_sequence_cache.keys()) - set(cache.keys()))
             if len(action_sequence) > max_cost:
                 continue
             for (action, _) in matrix.get_possible_actions():
                 successor = matrix.successor(action)
                 if str(successor) in cache:
                     continue
-                stack.append((successor, action_sequence + action))
-        return '', len(cache)
+                action_sequence_cache[str(successor)] = action_sequence + action
+                stack.append(successor)
+        return '', len(cache), len(set(action_sequence_cache.keys()) - set(cache.keys()))
 
     def greedy(self, starting_matrix, cache, heuristic='manhattan'):
         return self.astar(starting_matrix, cost='none', heuristic=heuristic, cache=cache)
@@ -90,4 +93,4 @@ class Searcher:
                 queue.add_item(successor,
                                matrix_cost_heuristic - matrix.heuristic + c(action_cost) + successor.heuristic,
                                successor.heuristic)
-        return '', len(cache)
+        return '', len(cache), len(set(action_sequence_cache.keys()) - set(cache.keys()))
